@@ -11,10 +11,10 @@
 <div class="app">
   <header>
     <div class="brand">Ignite 2026 <span>/ Stage 2</span></div>
-    <div class="seg" id="regions">
-      <button data-r="ALL" aria-pressed="true">All</button>
-      <button data-r="EU" aria-pressed="false">EU</button>
-      <button data-r="NA" aria-pressed="false">NA</button>
+    <div class="seg" id="modes">
+      <button data-m="EU" aria-pressed="false">EMEA</button>
+      <button data-m="NA" aria-pressed="false">Americas</button>
+      <button data-m="GLOBAL" aria-pressed="true">Global</button>
     </div>
     <div class="spacer" style="flex:1"></div>
     <button class="tool" id="export">Export</button>
@@ -27,11 +27,15 @@
     <div class="board" id="board"></div>
     <aside class="side">
       <div id="panel" class="hint">
-        <p><b>Drag a team</b> into a tier to rank it.</p>
-        <p><b>Click a team</b> to open its roster here, then click any name to change it.</p>
-        <p>The six dots on each team show its roster: solid is confirmed, hollow is an
-           open slot, amber is a leak. Teams with hollow dots are the ones nobody
-           has locked in yet.</p>
+        <p><b>Drag a team</b> from the pool into the list to place it. Drag rows to
+           reorder; the numbers renumber as you go.</p>
+        <p><b>EMEA, Americas and Global</b> are three separate rankings. Rank the two
+           regions first, then hit <b>Seed from EU + NA</b> in Global to start from
+           them rather than an empty list.</p>
+        <p><b>Click a team</b> to open its roster here, then click any name to change
+           it. Rate players S to F and each team shows the placement its roster
+           implies.</p>
+        <p>The six dots are the roster: solid confirmed, hollow open, amber leaked.</p>
       </div>
       <div class="log">
         <h3>Roster changes this session</h3>

@@ -54,27 +54,6 @@ header{
 .side{border-left:1px solid var(--line);background:var(--panel);
       overflow-y:auto;display:flex;flex-direction:column}
 
-/* ---------- tiers ---------- */
-.tier{display:grid;grid-template-columns:56px 1fr;gap:9px;margin-bottom:7px;
-      align-items:stretch}
-.tier-label{
-  display:flex;align-items:center;justify-content:center;border-radius:var(--r);
-  font-family:"Oswald";font-weight:700;font-size:25px;color:#12151A;
-  user-select:none;
-}
-.tier[data-t="S"] .tier-label{background:var(--s)}
-.tier[data-t="A"] .tier-label{background:var(--a)}
-.tier[data-t="B"] .tier-label{background:var(--b)}
-.tier[data-t="C"] .tier-label{background:var(--c)}
-.tier[data-t="D"] .tier-label{background:var(--d)}
-.tier[data-t="F"] .tier-label{background:var(--f);color:#C9CFD8}
-.slot{
-  min-height:64px;border:1px dashed var(--line);border-radius:var(--r);
-  background:var(--panel);padding:6px;display:flex;flex-wrap:wrap;gap:8px;
-  align-content:flex-start;transition:background .12s,border-color .12s;
-}
-.slot.over{border-color:var(--ink3);background:var(--panel2)}
-
 .pool-wrap{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
 .pool-title{font-family:"Oswald";font-weight:600;font-size:13px;letter-spacing:.16em;
             text-transform:uppercase;color:var(--ink3);margin:0 0 10px}
@@ -216,3 +195,42 @@ header{
 .avg[data-t="B"]{background:var(--b)} .avg[data-t="C"]{background:var(--c)}
 .avg[data-t="D"]{background:var(--d)}
 .avg[data-t="F"]{background:var(--f);color:#C9CFD8}
+
+/* ---------- ordered ranking ---------- */
+.board-head{display:flex;align-items:center;gap:14px;margin:0 0 10px}
+.board-head h2{font-family:"Oswald";font-weight:700;font-size:17px;letter-spacing:.12em;
+               text-transform:uppercase;margin:0;color:var(--ink)}
+.board-tools{display:flex;gap:7px;margin-left:auto}
+.tool.sm{padding:5px 11px;font-size:12px;letter-spacing:.06em}
+
+.ranking{list-style:none;margin:0 0 4px;padding:0}
+.ranking.over{outline:1px dashed var(--ink3);border-radius:var(--r)}
+.rank-row{
+  display:flex;align-items:center;gap:11px;padding:6px 12px 6px 4px;
+  background:var(--panel);border:1px solid transparent;border-radius:var(--r);
+  margin-bottom:4px;cursor:grab;position:relative;
+}
+.rank-row:hover{border-color:var(--line2)}
+.rank-row.sel{border-color:var(--ink);background:#222A34}
+.rank-row.drag{opacity:.35}
+.rank-row.ins-before{box-shadow:0 -3px 0 -1px var(--leak)}
+.rank-row.ins-after{box-shadow:0 3px 0 -1px var(--leak)}
+.place{
+  width:44px;flex:none;text-align:center;font-family:"Oswald";font-weight:700;
+  font-size:24px;color:var(--ink);font-variant-numeric:tabular-nums;
+}
+.rank-row img{width:38px;height:30px;object-fit:contain;flex:none;pointer-events:none}
+.rname{font-family:"Oswald";font-weight:600;font-size:17px;letter-spacing:.03em;
+       text-transform:uppercase;flex:1;pointer-events:none}
+.reg{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--ink3);
+     border:1px solid var(--line);border-radius:5px;padding:2px 7px;flex:none}
+.rank-row .pips{flex:none}
+.rank-row .avg{position:static;border:0;width:22px;height:22px;flex:none}
+.avg.none{background:none;color:var(--ink3);font-family:"Oswald";font-weight:700;
+          font-size:13px;display:flex;align-items:center;justify-content:center}
+.grip{color:var(--ink3);font-size:15px;flex:none;letter-spacing:-2px;pointer-events:none}
+.drop-hint{padding:22px;text-align:center;color:var(--ink3);font-style:italic;
+           border:1px dashed var(--line);border-radius:var(--r)}
+
+.rp-place{font-family:"Oswald";font-weight:600;font-size:13px;letter-spacing:.1em;
+          text-transform:uppercase;color:var(--leak);margin-top:2px}

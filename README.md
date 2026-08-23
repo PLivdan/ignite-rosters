@@ -57,10 +57,19 @@ python3 src/build_site.py          # regenerate docs/data.json from current rost
 cd docs && python3 -m http.server  # preview at localhost:8000
 ```
 
-- Drag a team from the pool into S/A/B/C/D/F.
+- Three separate rankings: **EMEA**, **Americas** and **Global**. Rank the regions
+  first, then hit **Seed from EU + NA** in Global to start from them interleaved
+  rather than an empty list.
+- Drag a team from the pool into the list to place it, and drag rows to reorder.
+  Positions renumber as you go.
+- **Order by player rating** sorts the list by each roster's average, which gives
+  a data-backed starting order to argue with rather than a blank page.
 - Click a team to open its roster; click any name to change it.
 - A name typed into an empty slot is marked **leaked** automatically, so
   anything picked up mid-stream is visually distinct from a confirmed roster.
+- Rate players S to F; each team shows the placement its roster implies. When a
+  team sits at #7 but its players average A, that gap is the thing worth talking
+  about on camera.
 - The six dots on each team are its 2-2-2 spine: solid confirmed, hollow open,
   amber leaked. You can see which teams nobody has locked in while you rank them.
 - Every change is timestamped in the change log, with the old name struck through.
