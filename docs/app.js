@@ -388,7 +388,7 @@ document.getElementById("reset").addEventListener("click", () => {
   setTimeout(() => { delete b.dataset.armed; b.textContent = "Reset"; }, 3000);
 });
 
-fetch("data.json").then(r => r.json()).then(d => {
+fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   DATA = d; S = load() || freshState(); render();
 }).catch(() => {
   document.getElementById("board").innerHTML =

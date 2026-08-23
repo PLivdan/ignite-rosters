@@ -61,6 +61,22 @@ def main():
         shutil.copy(os.path.join(ASSETS, "roles", r + ".png"),
                     os.path.join(roles, r + ".png"))
 
+    # Version the asset URLs by content hash. GitHub Pages lets browsers cache
+    # app.js and style.css, so without this a viewer who opened an earlier build
+    # keeps running the old board even after a deploy.
+    import hashlib, re as _re
+    idx = os.path.join(SITE, "index.html")
+    html = open(idx).read()
+    for asset in ("app.js", "style.css"):
+        h = hashlib.sha1(open(os.path.join(SITE, asset), "rb").read()).hexdigest()[:10]
+        html = _re.sub(_re.escape(asset) + r'(\?v=[0-9a-f]+)?', f"{asset}?v={h}", html)
+    if 'http-equiv="Cache-Control"' not in html:
+        html = html.replace('<meta charset="utf-8">',
+                            '<meta charset="utf-8">\n'
+                            '<meta http-equiv="Cache-Control" content="no-cache">')
+    open(idx, "w").write(html)
+    print("  asset versions stamped into index.html")
+
     payload = {
         "event": data["event"],
         "generated": data["generated"],
