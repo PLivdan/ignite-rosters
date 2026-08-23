@@ -24,7 +24,8 @@
   ],
   "exclude_teams": [
     "Disband",
-    "SON MIJO IBN"
+    "SON MIJO IBN",
+    "StickDrift"
   ],
   "exclude_note": "Teams dropped from the field. Remove a name here to bring it back."
 }

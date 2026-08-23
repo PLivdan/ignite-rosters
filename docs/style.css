@@ -176,3 +176,43 @@ header{
 .credit{margin:10px 0 0;font-size:12px;line-height:1.5;color:var(--ink3)}
 .credit a{color:var(--ink2)}
 .credit a:hover{color:var(--ink)}
+
+/* ---------- player ratings ---------- */
+/* Same ladder as the team tiers, so a roster average reads back as a tier. */
+.rank{
+  width:30px;flex:none;height:30px;border-radius:7px;border:1px solid var(--line);
+  font-family:"Oswald";font-weight:700;font-size:15px;color:#12151A;
+  display:flex;align-items:center;justify-content:center;
+}
+.rank.unrated{background:none;color:var(--ink3);border-style:dashed}
+.rank:disabled{opacity:.3;cursor:default}
+.rank[data-t="S"]{background:var(--s);border-color:var(--s)}
+.rank[data-t="A"]{background:var(--a);border-color:var(--a)}
+.rank[data-t="B"]{background:var(--b);border-color:var(--b)}
+.rank[data-t="C"]{background:var(--c);border-color:var(--c)}
+.rank[data-t="D"]{background:var(--d);border-color:var(--d)}
+.rank[data-t="F"]{background:var(--f);border-color:var(--f);color:#C9CFD8}
+
+.rp-avg{display:flex;align-items:center;gap:8px;margin:-6px 0 12px;
+        font-size:14px;color:var(--ink3);letter-spacing:.04em;
+        text-transform:uppercase;font-weight:600}
+.rp-avg b{font-family:"Oswald";font-size:16px;width:26px;height:26px;border-radius:6px;
+          display:flex;align-items:center;justify-content:center;color:#12151A}
+.rp-avg b[data-t="S"]{background:var(--s)} .rp-avg b[data-t="A"]{background:var(--a)}
+.rp-avg b[data-t="B"]{background:var(--b)} .rp-avg b[data-t="C"]{background:var(--c)}
+.rp-avg b[data-t="D"]{background:var(--d)}
+.rp-avg b[data-t="F"]{background:var(--f);color:#C9CFD8}
+.rp-avg span{text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink3)}
+
+/* implied-tier badge on the team chip */
+.team{position:relative}
+.avg{
+  position:absolute;top:-5px;right:-5px;width:19px;height:19px;border-radius:5px;
+  font-family:"Oswald";font-weight:700;font-size:12px;color:#12151A;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--panel2);pointer-events:none;
+}
+.avg[data-t="S"]{background:var(--s)} .avg[data-t="A"]{background:var(--a)}
+.avg[data-t="B"]{background:var(--b)} .avg[data-t="C"]{background:var(--c)}
+.avg[data-t="D"]{background:var(--d)}
+.avg[data-t="F"]{background:var(--f);color:#C9CFD8}

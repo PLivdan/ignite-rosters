@@ -26,6 +26,7 @@ function freshState() {
           role,
           name: p ? p.name : "",
           status: p ? "confirmed" : "open",
+          rank: null,
         });
       }
     }
@@ -34,11 +35,11 @@ function freshState() {
       !slots.some(s => s.name === p.name));
     rosters[t.id] = {
       slots,
-      extra: extra.map(p => ({ role: p.role, name: p.name, status: "confirmed" })),
+      extra: extra.map(p => ({ role: p.role, name: p.name, status: "confirmed", rank: null })),
       subs: t.roster.filter(p => p.status === "sub")
-              .map(p => ({ role: p.role, name: p.name, status: "confirmed" })),
+              .map(p => ({ role: p.role, name: p.name, status: "confirmed", rank: null })),
       staff: t.roster.filter(p => p.status === "staff")
-              .map(p => ({ role: p.role, name: p.name, status: "confirmed" })),
+              .map(p => ({ role: p.role, name: p.name, status: "confirmed", rank: null })),
     };
   }
   return { tiers: Object.fromEntries(TIERS.map(t => [t, []])), rosters, log: [] };
@@ -52,13 +53,32 @@ function load() {
     if (!raw) return null;
     const s = JSON.parse(raw);
     if (!s || !s.rosters || !s.tiers) return null;
-    // tolerate a data.json refresh that adds teams
-    for (const t of DATA.teams) if (!s.rosters[t.id]) s.rosters[t.id] = freshState().rosters[t.id];
+    // Tolerate a data.json refresh in both directions: teams added upstream get
+    // a roster, and teams dropped from the field are removed from any tier they
+    // were sitting in, which would otherwise render as undefined and throw.
+    const fresh = freshState();
+    for (const t of DATA.teams) if (!s.rosters[t.id]) s.rosters[t.id] = fresh.rosters[t.id];
+    const known = new Set(DATA.teams.map(t => t.id));
+    for (const k of Object.keys(s.rosters)) if (!known.has(k)) delete s.rosters[k];
+    for (const t of TIERS) s.tiers[t] = (s.tiers[t] || []).filter(id => known.has(id));
     return s;
   } catch (e) { return null; }
 }
 
 const team = id => DATA.teams.find(t => t.id === id);
+
+// Player ratings use the same ladder as the team tiers, so a roster's average
+// can be read straight back as "the tier these players say you are".
+const RANK_VAL = { S: 6, A: 5, B: 4, C: 3, D: 2, F: 1 };
+const nextRank = r => TIERS[TIERS.indexOf(r) + 1] ?? (r == null ? "S" : null);
+
+function teamAvg(id) {
+  const rated = S.rosters[id].slots.filter(p => p.name && p.rank);
+  if (!rated.length) return null;
+  const mean = rated.reduce((a, p) => a + RANK_VAL[p.rank], 0) / rated.length;
+  const letter = TIERS[Math.round(6 - mean)] ?? "F";
+  return { letter, mean, n: rated.length };
+}
 const ranked = () => new Set(TIERS.flatMap(t => S.tiers[t]));
 const visible = id => region === "ALL" || team(id).region === region;
 
@@ -82,8 +102,11 @@ function pips(id) {
 
 function chip(id) {
   const t = team(id);
+  const a = teamAvg(id);
   return `<div class="team${sel === id ? " sel" : ""}" draggable="true" data-id="${id}"
                title="${esc(t.name)}">
+    ${a ? `<span class="avg" data-t="${a.letter}"
+             title="Players average ${a.mean.toFixed(1)} over ${a.n} rated">${a.letter}</span>` : ""}
     <img src="${t.logo}" alt="">
     <div class="nm">${esc(t.short || t.name)}</div>
     <div class="pips">${pips(id)}</div>
@@ -112,7 +135,12 @@ function rowHtml(teamId, kind, i, s) {
   const open = !s.name;
   const cls = s.status === "leaked" ? "leak" : open ? "empty" : "";
   const label = open ? "open" : s.status;
+  const rk = s.rank || "";
   return `<div class="row ${cls}" data-kind="${kind}" data-i="${i}">
+    <button class="rank${rk ? "" : " unrated"}" data-t="${rk}" data-team="${teamId}"
+            data-kind="${kind}" data-i="${i}"
+            title="Rate this player. Click to cycle S to F, again to clear."
+            ${open ? "disabled" : ""}>${rk || "–"}</button>
     <input value="${esc(s.name)}" placeholder="open slot"
            data-team="${teamId}" data-kind="${kind}" data-i="${i}" spellcheck="false">
     <button class="chip" data-s="${label}" data-team="${teamId}"
@@ -127,6 +155,7 @@ function renderPanel() {
   const t = team(sel), r = S.rosters[sel];
   const filled = r.slots.filter(s => s.name).length;
   const leaks = r.slots.filter(s => s.status === "leaked" && s.name).length;
+  const avg = teamAvg(sel);
 
   const groups = ROLES.map(([role, label], gi) => {
     const idx = [gi * 2, gi * 2 + 1];
@@ -151,6 +180,9 @@ function renderPanel() {
       <div class="rp-name">${esc(t.name)}</div></div>
     <div class="rp-meta">${t.region === "EU" ? "EMEA" : "Americas"}
       &nbsp;&nbsp; ${filled}/6 starters${leaks ? ` &nbsp;&nbsp; ${leaks} leaked` : ""}</div>
+    ${avg ? `<div class="rp-avg">Players average
+       <b data-t="${avg.letter}">${avg.letter}</b>
+       <span>${avg.mean.toFixed(1)} over ${avg.n} rated</span></div>` : ""}
     ${t.contested.length ? `<div class="rp-warn">Source lists ${esc(t.contested.join(", "))}
        — one of these is likely wrong. Clear the name that does not belong.</div>` : ""}
     ${groups}${extras}
@@ -251,6 +283,12 @@ function focusNext(el) {
 }
 
 document.addEventListener("click", e => {
+  const rk = e.target.closest(".rank");
+  if (rk && !rk.disabled) {
+    const rec = bucket(rk.dataset.team, rk.dataset.kind)[+rk.dataset.i];
+    if (rec) { rec.rank = nextRank(rec.rank); render(); }
+    return;
+  }
   const c = e.target.closest(".chip");
   if (c) {
     const arr = bucket(c.dataset.team, c.dataset.kind);

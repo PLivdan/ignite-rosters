@@ -66,6 +66,9 @@ def main():
         index.setdefault(k, v)
 
     state = {t["name"]: {} for t in teams}
+    # An alias must never resolve to a team that was excluded from the field,
+    # or every later state[...] lookup for it raises KeyError.
+    index = {k: v for k, v in index.items() if v in state}
 
     # ---- baseline: Stage 1 rosters, minus anyone already marked former ----
     kept, dropped_former = 0, []
