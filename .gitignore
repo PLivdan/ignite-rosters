@@ -1,0 +1,15 @@
+# Build output — regenerate with: python3 src/build_all.py
+out/
+build/
+
+# Fetched upstream copies and downloaded art — regenerate with the fetch scripts
+raw/
+assets/logos/
+assets/headshots/
+assets/roles/
+
+# Keep assets/fonts/ tracked: the site needs them and they are OFL licensed.
+
+.DS_Store
+__pycache__/
+*.pyc

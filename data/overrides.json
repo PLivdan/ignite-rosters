@@ -1,0 +1,25 @@
+{
+  "note": "Corrections known before Liquipedia records them. Applied AFTER the transfer list, so these always win. Add a row, then re-run: python3 src/build_all.py --no-fetch",
+  "moves": [
+    {
+      "date": "2026-08-23",
+      "player": "Meliø",
+      "from": "FlyQuest",
+      "to": "",
+      "role": "",
+      "status": "",
+      "source": "Clock (VOLT)",
+      "note": "Off FlyQuest. No transfer row on Liquipedia yet."
+    },
+    {
+      "date": "2026-08-23",
+      "player": "Handsa",
+      "from": "FlyQuest",
+      "to": "",
+      "role": "",
+      "status": "",
+      "source": "Clock (VOLT)",
+      "note": "Retired. No transfer row on Liquipedia yet."
+    }
+  ]
+}

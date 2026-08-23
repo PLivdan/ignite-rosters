@@ -1,0 +1,53 @@
+{
+  "source": "https://x.com/AkamaruRivals",
+  "captured": "2026-08-23",
+  "note": "Pasted by hand; X blocks unauthenticated reads. Add new posts here and re-run `python3 src/build_all.py` to refresh the workbook and cards.",
+  "posts": [
+    {
+      "id": "ak-2026-05-05-vision-sen",
+      "date": "2026-05-05",
+      "kind": "roster",
+      "text": "Sources: Vision trialing with Sentinels",
+      "team": "Sentinels",
+      "players": ["Vision"],
+      "claim": "trial",
+      "confidence": "reported"
+    },
+    {
+      "id": "ak-2026-05-04-ssg-core",
+      "date": "2026-05-04",
+      "kind": "roster",
+      "text": "Sources: SpaceStation Gaming planning to rebuild around Necrize, Month and Nectar",
+      "team": "Spacestation Gaming",
+      "players": ["Necrize", "month", "nectar"],
+      "claim": "rebuild-core",
+      "confidence": "reported",
+      "caveat": "Author said the same day he 'forgot one name' and would repost; treat this list as incomplete."
+    },
+    {
+      "id": "ak-2026-05-04-ntmr-core",
+      "date": "2026-05-04",
+      "kind": "roster",
+      "text": "Sources: NTMR will be rebuilding around Mace, Vision and Dinks.",
+      "team": "NTMR",
+      "players": ["MACE", "Vision", "Dinks"],
+      "claim": "rebuild-core",
+      "confidence": "reported",
+      "caveat": "Superseded in part: the author reported Vision trialing with Sentinels the following day."
+    },
+    {
+      "id": "ak-2026-05-04-meta-repost",
+      "date": "2026-05-04",
+      "kind": "meta",
+      "text": "imma repost ssg one in a lil bit for better visibility and i think i forgot one name",
+      "team": "", "players": [], "claim": "", "confidence": ""
+    },
+    {
+      "id": "ak-2026-05-04-meta-timing",
+      "date": "2026-05-04",
+      "kind": "meta",
+      "text": "first post at 9am pst",
+      "team": "", "players": [], "claim": "", "confidence": ""
+    }
+  ]
+}

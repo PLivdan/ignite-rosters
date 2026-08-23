@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ignite 2026 Stage 2 — Power Ranking</title>
+<meta name="description" content="Drag-to-rank tier list for Marvel Rivals Ignite 2026 Stage 2, with live-editable rosters.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">Ignite 2026 <span>/ Stage 2</span></div>
+    <div class="seg" id="regions">
+      <button data-r="ALL" aria-pressed="true">All</button>
+      <button data-r="EU" aria-pressed="false">EU</button>
+      <button data-r="NA" aria-pressed="false">NA</button>
+    </div>
+    <div class="spacer" style="flex:1"></div>
+    <button class="tool" id="export">Export</button>
+    <button class="tool" id="import">Import</button>
+    <button class="tool" id="reset">Reset</button>
+    <input type="file" id="file" accept="application/json" hidden>
+  </header>
+
+  <div class="main">
+    <div class="board" id="board"></div>
+    <aside class="side">
+      <div id="panel" class="hint">
+        <p><b>Drag a team</b> into a tier to rank it.</p>
+        <p><b>Click a team</b> to open its roster here, then click any name to change it.</p>
+        <p>The six dots on each team show its roster: solid is confirmed, hollow is an
+           open slot, amber is a leak. Teams with hollow dots are the ones nobody
+           has locked in yet.</p>
+      </div>
+      <div class="log">
+        <h3>Roster changes this session</h3>
+        <ol id="log"><li class="empty-note">Nothing changed yet.</li></ol>
+        <p class="credit">Rosters and logos from
+          <a href="https://liquipedia.net/marvelrivals/" rel="noopener">Liquipedia</a>
+          (CC BY-SA 3.0). Player photos from
+          <a href="https://arianwever.com/teams" rel="noopener">Weverboard</a>.
+          Team logos remain the property of their organisations.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

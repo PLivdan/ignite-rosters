@@ -1,0 +1,178 @@
+/* Ignite Stage 2 power-ranking board.
+   Built to be looked at on a stream: dark, high contrast, large type, no chrome
+   that competes with 24 different team brand colours. */
+
+@font-face { font-family:"Oswald"; src:url("fonts/Oswald[wght].ttf") format("truetype");
+             font-weight:200 700; font-display:swap; }
+@font-face { font-family:"Barlow C"; src:url("fonts/BarlowCondensed-Medium.ttf") format("truetype");
+             font-weight:500; font-display:swap; }
+@font-face { font-family:"Barlow C"; src:url("fonts/BarlowCondensed-SemiBold.ttf") format("truetype");
+             font-weight:600; font-display:swap; }
+@font-face { font-family:"Barlow C"; src:url("fonts/BarlowCondensed-Bold.ttf") format("truetype");
+             font-weight:700; font-display:swap; }
+
+:root{
+  --bg:#0E1116; --panel:#151A21; --panel2:#1B212A;
+  --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+  --ink:#F2F5F8; --ink2:#AEB6C2; --ink3:#6E7889;
+  --duelist:#E2523A; --vanguard:#4A90D9; --strategist:#3FB984;
+  --leak:#F0A93B; --ok:#3FB984;
+  --s:#E8B33A; --a:#D98A3D; --b:#B9793F; --c:#7E8794; --d:#5D6572; --f:#464C56;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Barlow C",system-ui,sans-serif; font-size:17px;
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+button,input{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+header{
+  display:flex;align-items:center;gap:18px;
+  padding:12px 20px;border-bottom:1px solid var(--line);background:var(--panel);
+}
+.brand{font-family:"Oswald";font-weight:700;font-size:20px;letter-spacing:.08em;
+       text-transform:uppercase;white-space:nowrap}
+.brand span{color:var(--ink3);font-weight:400}
+.spacer{flag:1;flex:1}
+.seg{display:flex;border:1px solid var(--line2);border-radius:999px;overflow:hidden}
+.seg button{padding:6px 16px;font-weight:600;font-size:14px;letter-spacing:.06em;
+            text-transform:uppercase;color:var(--ink3)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#0E1116}
+.tool{padding:7px 14px;border:1px solid var(--line2);border-radius:8px;
+      font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase;
+      color:var(--ink2)}
+.tool:hover{border-color:var(--ink3);color:var(--ink)}
+
+.main{display:grid;grid-template-columns:1fr 384px;overflow:hidden}
+.board{overflow-y:auto;padding:11px 16px 18px}
+.side{border-left:1px solid var(--line);background:var(--panel);
+      overflow-y:auto;display:flex;flex-direction:column}
+
+/* ---------- tiers ---------- */
+.tier{display:grid;grid-template-columns:56px 1fr;gap:9px;margin-bottom:7px;
+      align-items:stretch}
+.tier-label{
+  display:flex;align-items:center;justify-content:center;border-radius:var(--r);
+  font-family:"Oswald";font-weight:700;font-size:25px;color:#12151A;
+  user-select:none;
+}
+.tier[data-t="S"] .tier-label{background:var(--s)}
+.tier[data-t="A"] .tier-label{background:var(--a)}
+.tier[data-t="B"] .tier-label{background:var(--b)}
+.tier[data-t="C"] .tier-label{background:var(--c)}
+.tier[data-t="D"] .tier-label{background:var(--d)}
+.tier[data-t="F"] .tier-label{background:var(--f);color:#C9CFD8}
+.slot{
+  min-height:64px;border:1px dashed var(--line);border-radius:var(--r);
+  background:var(--panel);padding:6px;display:flex;flex-wrap:wrap;gap:8px;
+  align-content:flex-start;transition:background .12s,border-color .12s;
+}
+.slot.over{border-color:var(--ink3);background:var(--panel2)}
+
+.pool-wrap{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.pool-title{font-family:"Oswald";font-weight:600;font-size:13px;letter-spacing:.16em;
+            text-transform:uppercase;color:var(--ink3);margin:0 0 10px}
+.pool{min-height:72px;border:1px dashed var(--line);border-radius:var(--r);
+      background:var(--panel);padding:8px;display:flex;flex-wrap:wrap;gap:8px;
+      align-content:flex-start}
+
+/* ---------- team chip ---------- */
+.team{
+  position:relative;width:86px;padding:6px 4px 5px;border-radius:var(--r);
+  background:var(--panel2);border:1px solid transparent;cursor:grab;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:border-color .12s,transform .08s;
+}
+.team:hover{border-color:var(--line2)}
+.team.sel{border-color:var(--ink);background:#222A34}
+.team.drag{opacity:.35}
+.team img{width:46px;height:34px;object-fit:contain;pointer-events:none}
+.team .nm{font-family:"Oswald";font-weight:600;font-size:12px;letter-spacing:.04em;
+          text-transform:uppercase;text-align:center;line-height:1.15;
+          color:var(--ink);pointer-events:none}
+/* six dots = the 2-2-2 spine. Hollow means nobody has confirmed that slot,
+   which is the thing you are actually ranking under. */
+.pips{display:flex;gap:3px;pointer-events:none}
+.pip{width:7px;height:7px;border-radius:2px;background:var(--ink3)}
+.pip.empty{background:none;box-shadow:inset 0 0 0 1px var(--ink3)}
+.pip.leak{background:var(--leak)}
+
+/* ---------- roster panel ---------- */
+.rp{padding:13px 16px}
+.rp-head{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.rp-head img{width:52px;height:44px;object-fit:contain}
+.rp-name{font-family:"Oswald";font-weight:700;font-size:22px;letter-spacing:.03em;
+         text-transform:uppercase;line-height:1.05}
+.rp-meta{font-size:14px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;
+         font-weight:600;margin-bottom:14px}
+.rp-warn{background:rgba(240,169,59,.12);border:1px solid rgba(240,169,59,.4);
+         color:var(--leak);border-radius:8px;padding:8px 10px;font-size:14px;
+         font-weight:600;margin-bottom:12px}
+
+.grp{margin-bottom:9px}
+.grp-h{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.grp-h img{width:19px;height:16px;object-fit:contain}
+.grp-h span{font-family:"Oswald";font-weight:600;font-size:12px;letter-spacing:.16em;
+            text-transform:uppercase}
+.grp[data-r="DPS"] .grp-h span{color:var(--duelist)}
+.grp[data-r="Tank"] .grp-h span{color:var(--vanguard)}
+.grp[data-r="Support"] .grp-h span{color:var(--strategist)}
+
+.row{display:flex;align-items:center;gap:7px;padding:2px 0}
+.row input{
+  flex:1;background:var(--panel2);border:1px solid transparent;border-radius:7px;
+  padding:5px 9px;font-family:"Oswald";font-weight:500;font-size:16px;
+  letter-spacing:.02em;
+}
+.row input:hover{border-color:var(--line)}
+.row input:focus{outline:0;border-color:var(--ink);background:#232B36}
+.row input::placeholder{color:var(--ink3);font-style:italic;font-weight:400}
+.row.leak input{color:var(--leak)}
+.row.empty input{border:1px dashed var(--line2)}
+.chip{
+  width:70px;flex:none;text-align:center;padding:4px 0;border-radius:6px;
+  font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);color:var(--ink3);
+}
+.chip[data-s="confirmed"]{color:var(--ok);border-color:rgba(63,185,132,.45)}
+.chip[data-s="leaked"]{color:var(--leak);border-color:rgba(240,169,59,.5);
+                       background:rgba(240,169,59,.10)}
+.chip[data-s="open"]{color:var(--ink3);border-style:dashed}
+
+.sub-h{font-family:"Oswald";font-weight:600;font-size:12px;letter-spacing:.16em;
+       text-transform:uppercase;color:var(--ink3);margin:11px 0 3px}
+.addbtn{width:100%;margin-top:6px;padding:9px;border:1px dashed var(--line2);
+        border-radius:8px;color:var(--ink3);font-weight:600;font-size:14px;
+        letter-spacing:.08em;text-transform:uppercase}
+.addbtn:hover{border-color:var(--leak);color:var(--leak)}
+
+/* ---------- change log ---------- */
+.log{margin-top:auto;border-top:1px solid var(--line);padding:11px 16px 14px}
+.log h3{font-family:"Oswald";font-weight:600;font-size:12px;letter-spacing:.16em;
+        text-transform:uppercase;color:var(--ink3);margin:0 0 8px}
+.log ol{list-style:none;margin:0;padding:0;max-height:150px;overflow-y:auto}
+.log li{display:flex;gap:8px;align-items:baseline;padding:4px 0;font-size:15px;
+        border-bottom:1px solid var(--line)}
+.log .t{color:var(--ink3);font-size:12px;font-weight:600;flex:none;width:56px}
+.log .from{color:var(--ink3);text-decoration:line-through}
+.log .arw{color:var(--leak);font-weight:700}
+.log .to{color:var(--ink);font-weight:600}
+.log .team-tag{color:var(--ink3);font-size:12px;letter-spacing:.08em;
+               text-transform:uppercase;font-weight:700}
+.empty-note{color:var(--ink3);font-size:15px;font-style:italic}
+
+.hint{padding:20px;color:var(--ink3);font-size:16px;line-height:1.5}
+.hint b{color:var(--ink2);font-weight:600}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#2A323D;border-radius:6px}
+::-webkit-scrollbar-track{background:transparent}
+
+.credit{margin:10px 0 0;font-size:12px;line-height:1.5;color:var(--ink3)}
+.credit a{color:var(--ink2)}
+.credit a:hover{color:var(--ink)}
