@@ -41,6 +41,14 @@ def main():
             "contested": t["contested"],
         })
 
+    # Drop logos for teams no longer in the field, so excluding a team does not
+    # leave an orphaned file behind in the published folder.
+    keep = {os.path.basename(t["logo"]) for t in teams}
+    for fn in os.listdir(logos):
+        if fn.endswith(".png") and fn not in keep:
+            os.remove(os.path.join(logos, fn))
+            print(f"  pruned stale logo: {fn}")
+
     fonts = os.path.join(SITE, "fonts")
     os.makedirs(fonts, exist_ok=True)
     for f in ("Oswald[wght].ttf", "BarlowCondensed-Medium.ttf",
