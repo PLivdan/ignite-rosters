@@ -354,13 +354,37 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- toolbar ---------- */
+// A browser holding a cached index.html from an older deploy will run this
+// (fresh) script against markup that no longer matches, and every lookup below
+// returns null. Detect it and reload once past the cache rather than dying with
+// a blank board.
+if (!document.getElementById("modes")) {
+  if (!sessionStorage.getItem("wev-stale-html")) {
+    sessionStorage.setItem("wev-stale-html", "1");
+    location.replace(location.pathname + "?r=" + Date.now());
+  } else {
+    document.body.innerHTML =
+      '<p style="color:#AEB6C2;font:16px system-ui;padding:40px;line-height:1.6">' +
+      'This page is running a cached older version. Hard-refresh to update: ' +
+      '<b>Cmd+Shift+R</b> on Mac, <b>Ctrl+F5</b> on Windows.</p>';
+  }
+  return;
+}
+sessionStorage.removeItem("wev-stale-html");
+
+// Missing nodes must never take the whole board down.
+const on = (id, ev, fn) => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener(ev, fn);
+};
+
 document.getElementById("modes").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   mode = b.dataset.m;
   [...e.currentTarget.children].forEach(x => x.setAttribute("aria-pressed", String(x === b)));
   render();
 });
-document.getElementById("export").addEventListener("click", () => {
+on("export", "click", () => {
   const blob = new Blob([JSON.stringify({ v: 2, saved: new Date().toISOString(), state: S }, null, 2)],
                         { type: "application/json" });
   const a = document.createElement("a");
@@ -368,8 +392,8 @@ document.getElementById("export").addEventListener("click", () => {
   a.download = "ignite-s2-ranking.json";
   a.click(); URL.revokeObjectURL(a.href);
 });
-document.getElementById("import").addEventListener("click", () => document.getElementById("file").click());
-document.getElementById("file").addEventListener("change", e => {
+on("import", "click", () => document.getElementById("file")?.click());
+on("file", "change", e => {
   const f = e.target.files[0]; if (!f) return;
   const r = new FileReader();
   r.onload = () => {
@@ -380,7 +404,7 @@ document.getElementById("file").addEventListener("change", e => {
   };
   r.readAsText(f); e.target.value = "";
 });
-document.getElementById("reset").addEventListener("click", () => {
+on("reset", "click", () => {
   const b = document.getElementById("reset");
   if (b.dataset.armed) { S = freshState(); sel = null; render();
                          delete b.dataset.armed; b.textContent = "Reset"; return; }
