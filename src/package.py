@@ -49,15 +49,15 @@ READ THIS BEFORE TRUSTING THE NAMES
   every 2026 Q3 transfer applied on top. That is the best picture
   available today, not an official roster.
 
-  13 of the 24 teams are missing at least one starter. Those gaps
+  About half the teams are missing at least one starter. Those gaps
   are real, not an error in the data.
 
 
 KNOWN GAPS
 
-  No logo exists on any source for four teams, so their cards use
+  No logo exists on any source for two teams, so their cards use
   a lettered monogram instead:
-      The Chosen Ones, Disband, SON MIJO IBN, JollyJesters
+      The Chosen Ones, JollyJesters
 
   CrownFall and Vengeful each show three Supports. The source
   spells a departure differently from the arrival, so the extra
@@ -70,7 +70,6 @@ SOURCES
   Rosters, roles, staff   Liquipedia, MR Ignite 2026 Stage 1 and 2
   Roster corrections      Liquipedia, Player Transfers 2026 Q3
   Logos                   Liquipedia, full resolution
-  Player headshots        Weverboard (arianwever.com)
   Leaks                   x.com/AkamaruRivals
 """
 

@@ -1,6 +1,6 @@
 # Ignite 2026 Stage 2 — roster board & card set
 
-Editable rosters for the 24 EU + NA teams in Marvel Rivals Ignite 2026 Stage 2,
+Editable rosters for the EU + NA teams in Marvel Rivals Ignite 2026 Stage 2,
 plus a transparent-background card set built from them.
 
 Built for ranking teams on camera before the stage starts, when rosters are
@@ -41,8 +41,11 @@ Tournament pages are edited per-event and lag reality; the transfer list is
 maintained continuously. Where they disagree, the transfer list wins. Every
 person carries an `origin`, so an unconfirmed slot is visible rather than implied.
 
-13 of 24 teams are short at least one starter. That is the real state of the
-field, not a gap in the data.
+Roughly half the field is short at least one starter. That is the real state of
+the field, not a gap in the data.
+
+Teams can be dropped from the field entirely via `exclude_teams` in
+`data/overrides.json`.
 
 ## The live board (`docs/`)
 
@@ -121,8 +124,8 @@ is actually played on, and the thing a power ranking turns on.
 
 ## Known gaps
 
-- No logo exists on any source for **The Chosen Ones, Disband, SON MIJO IBN,
-  JollyJesters**. Their cards use a lettered monogram.
+- No logo exists on any source for **The Chosen Ones** and **JollyJesters**.
+  Their cards use a lettered monogram.
 - **CrownFall** and **Vengeful** each resolve to three Supports: the source
   spells a departure differently from the arrival (`Sleepai` vs `Shleepai`).
   Flagged as contested rather than guessed.

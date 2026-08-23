@@ -52,7 +52,11 @@ def stage2_teams():
 
 
 def main():
-    teams = stage2_teams()
+    ov_path = os.path.join(os.path.dirname(RAW), "data", "overrides.json")
+    overrides = json.load(open(ov_path)) if os.path.exists(ov_path) else {}
+    dropped = {norm(canon(x)) for x in overrides.get("exclude_teams", [])}
+
+    teams = [t for t in stage2_teams() if norm(canon(t["name"])) not in dropped]
     index = {norm(t["name"]): t["name"] for t in teams}
     for t in teams:
         index.setdefault(norm(t["lp_name"]), t["name"])
@@ -101,8 +105,6 @@ def main():
             applied.append((m["date"], m["name"], f"joined {dst} as {role or kind}"))
 
     # ---- local corrections: things known before Liquipedia records them ----
-    ov_path = os.path.join(os.path.dirname(RAW), "data", "overrides.json")
-    overrides = json.load(open(ov_path)) if os.path.exists(ov_path) else {"moves": []}
     for mv in overrides.get("moves", []):
         who = mv["player"]
         src = index.get(norm(canon(mv.get("from", "")))) if mv.get("from") else None
@@ -182,6 +184,8 @@ def main():
     with open(os.path.join(BUILD, "current.json"), "w") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
 
+    if dropped:
+        print(f"excluded by data/overrides.json: {overrides.get('exclude_teams')}")
     print(f"Stage 2 field: {len(out)} teams "
           f"({sum(1 for t in out if t['region']=='EU')} EU / "
           f"{sum(1 for t in out if t['region']=='NA')} NA)")

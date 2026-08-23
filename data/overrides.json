@@ -21,5 +21,10 @@
       "source": "Clock (VOLT)",
       "note": "Retired. No transfer row on Liquipedia yet."
     }
-  ]
+  ],
+  "exclude_teams": [
+    "Disband",
+    "SON MIJO IBN"
+  ],
+  "exclude_note": "Teams dropped from the field. Remove a name here to bring it back."
 }
