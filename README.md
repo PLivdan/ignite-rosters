@@ -44,14 +44,14 @@ person carries an `origin`, so an unconfirmed slot is visible rather than implie
 13 of 24 teams are short at least one starter. That is the real state of the
 field, not a gap in the data.
 
-## The live board (`site/`)
+## The live board (`docs/`)
 
 A drag-to-rank tier list with editable rosters, built to run on stream. Static
 files only, so it deploys to GitHub Pages as-is.
 
 ```bash
-python3 src/build_site.py          # regenerate site/data.json from current rosters
-cd site && python3 -m http.server  # preview at localhost:8000
+python3 src/build_site.py          # regenerate docs/data.json from current rosters
+cd docs && python3 -m http.server  # preview at localhost:8000
 ```
 
 - Drag a team from the pool into S/A/B/C/D/F.
@@ -86,7 +86,7 @@ src/
   parse_rosters.py   wikitext -> rosters
   transfers.py       Player Transfers parser
   build_current.py   baseline + transfers + overrides + leaks -> current.json
-  build_site.py      emits site/data.json, web logos, fonts
+  build_site.py      emits docs/data.json, web logos, fonts
   build_workbook.py  current.json -> xlsx
   read_workbook.py   xlsx -> current.json   (the round trip)
   design.py          type scale, colour, logo normalisation
@@ -94,7 +94,7 @@ src/
   svgtext.py         glyphs -> SVG paths, so exports carry no font dependency
   build_cards.py     renders every set
   package.py         zips it
-site/              the live tier-list board (index.html, app.js, style.css)
+docs/              the live tier-list board (published by GitHub Pages) (index.html, app.js, style.css)
 data/leaks.json    paste new AkamaruRivals posts here
 data/overrides.json corrections Liquipedia has not recorded yet
 ```

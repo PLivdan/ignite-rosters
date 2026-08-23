@@ -1,4 +1,4 @@
-"""Emit the static tier-list site: site/data.json, web-sized logos, fonts."""
+"""Emit the static tier-list board: docs/data.json, web-sized logos, fonts."""
 import json, os, shutil, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from PIL import Image
@@ -6,7 +6,9 @@ from common import BUILD, ASSETS, ROOT, slug
 from design import trim
 import cards as C
 
-SITE = os.path.join(ROOT, "site")
+# GitHub Pages only serves a branch from / or /docs, so the published
+# board lives in docs/ rather than site/.
+SITE = os.path.join(ROOT, "docs")
 LOGO_PX = 320
 
 
@@ -61,8 +63,8 @@ def main():
     with open(os.path.join(SITE, "data.json"), "w") as f:
         json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
     kb = os.path.getsize(os.path.join(SITE, "data.json")) / 1024
-    print(f"site/data.json  {len(teams)} teams, {kb:.0f} KB")
-    print(f"site/logos/     {len(os.listdir(logos))} files")
+    print(f"docs/data.json  {len(teams)} teams, {kb:.0f} KB")
+    print(f"docs/logos/     {len(os.listdir(logos))} files")
 
 
 if __name__ == "__main__":
