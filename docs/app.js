@@ -146,7 +146,7 @@ function rowHtml(teamId, kind, i, s) {
              title="Rate ${r}${r === rk ? " (click again to clear)" : ""}">${r}</button>`).join("");
   return `<div class="row ${cls}">
     <div class="rate" role="group" aria-label="Player rating">${picker}</div>
-    <input value="${esc(s.name)}" placeholder="open slot"
+    <input value="${esc(s.name)}" placeholder="open slot" title="${esc(s.name)}"
            data-team="${teamId}" data-kind="${kind}" data-i="${i}" spellcheck="false">
     <button class="chip" data-s="${label}" data-team="${teamId}"
             data-kind="${kind}" data-i="${i}"
