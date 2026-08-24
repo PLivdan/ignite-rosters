@@ -10,6 +10,17 @@
       "status": "",
       "source": "Clock (VOLT)",
       "note": "Retired. No transfer row on Liquipedia yet."
+    },
+    {
+      "date": "2026-08-24",
+      "player": "Reedis",
+      "from": "",
+      "to": "FlyQuest",
+      "role": "DPS",
+      "status": "main",
+      "confirmed": false,
+      "source": "Clock (VOLT)",
+      "note": "Free agent since leaving Stickdrift 2026-08-17. Not on Liquipedia yet."
     }
   ],
   "exclude_teams": [
@@ -17,5 +28,17 @@
     "SON MIJO IBN",
     "StickDrift"
   ],
-  "exclude_note": "Teams dropped from the field. Remove a name here to bring it back."
+  "exclude_note": "Teams dropped from the field. Remove a name here to bring it back.",
+  "role_changes": [
+    {
+      "date": "2026-08-24",
+      "player": "Meliø",
+      "team": "FlyQuest",
+      "role": "Flex",
+      "confirmed": false,
+      "source": "Clock (VOLT)",
+      "note": "Moves to fill to make room for Reedis. Expected, not confirmed."
+    }
+  ],
+  "role_changes_note": "Change someone's role without moving teams. Applied after moves."
 }

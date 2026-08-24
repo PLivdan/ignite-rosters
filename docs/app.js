@@ -6,7 +6,9 @@
 "use strict";
 
 const MODES = ["EU", "NA", "GLOBAL"];
-const ROLES = [["DPS", "Duelist"], ["Tank", "Vanguard"], ["Support", "Strategist"]];
+const ROLES = [["DPS", "Duelist"], ["Tank", "Vanguard"], ["Support", "Strategist"],
+               ["Flex", "Fill"]];
+const CORE = ROLES.slice(0, 3);   // the fixed 2-2-2 spine
 const RANKS = ["S", "A", "B", "C", "D", "F"];
 const RANK_VAL = { S: 6, A: 5, B: 4, C: 3, D: 2, F: 1 };
 const KEY = "ignite-s2-board-v2";
@@ -17,18 +19,27 @@ let DATA = null, S = null, sel = null, mode = "GLOBAL";
 function freshState() {
   const rosters = {};
   for (const t of DATA.teams) {
-    const slots = [];
-    for (const [role] of ROLES) {
-      const inRole = t.roster.filter(p => p.status === "main" && p.role === role);
+    const mains = t.roster.filter(p => p.status === "main");
+    const st = p => (p.flag === "leaked" ? "leaked" : "confirmed");
+    const slots = [], used = new Set();
+    for (const [role] of CORE) {
+      const inRole = mains.filter(p => p.role === role);
       for (let i = 0; i < 2; i++) {
         const p = inRole[i];
+        if (p) used.add(p.name);
         slots.push({ role, name: p ? p.name : "",
-                     status: p ? "confirmed" : "open", rank: null });
+                     status: p ? st(p) : "open", rank: null });
       }
     }
-    const extra = t.roster.filter(p => p.status === "main" &&
-      !slots.some(s => s.name === p.name));
-    const map = p => ({ role: p.role, name: p.name, status: "confirmed", rank: null });
+    // A fill player, or a third of some role, takes a remaining slot but keeps
+    // their own role label rather than being mislabelled by position.
+    const extra = [];
+    for (const p of mains.filter(x => !used.has(x.name))) {
+      const empty = slots.find(s => !s.name);
+      if (empty) { empty.name = p.name; empty.role = p.role || empty.role; empty.status = st(p); }
+      else extra.push({ role: p.role, name: p.name, status: st(p), rank: null });
+    }
+    const map = p => ({ role: p.role, name: p.name, status: st(p), rank: null });
     rosters[t.id] = {
       slots, extra: extra.map(map),
       subs: t.roster.filter(p => p.status === "sub").map(map),
@@ -163,10 +174,12 @@ function renderPanel() {
   const avg = teamAvg(sel);
   const place = order().indexOf(sel);
 
-  const groups = ROLES.map(([role, lab], gi) => {
-    const idx = [gi * 2, gi * 2 + 1];
+  const groups = ROLES.map(([role, lab]) => {
+    const idx = r.slots.map((s, i) => [s, i]).filter(([s]) => s.role === role).map(([, i]) => i);
+    if (!idx.length) return "";
+    const icon = role === "Flex" ? "" : `<img src="roles/${lab}.png" alt="">`;
     return `<div class="grp" data-r="${role}">
-      <div class="grp-h"><img src="roles/${lab}.png" alt=""><span>${lab}</span></div>
+      <div class="grp-h">${icon}<span>${lab}</span></div>
       ${idx.map(i => rowHtml(sel, "slots", i, r.slots[i])).join("")}
     </div>`;
   }).join("");

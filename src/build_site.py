@@ -35,7 +35,8 @@ def main():
             "region": t["region"],
             "logo": "logos/" + fn,
             "roster": [{"name": p["name"], "role": p["role"], "status": p["status"],
-                        "origin": p["origin"], "since": p.get("since", "")}
+                        "origin": p["origin"], "since": p.get("since", ""),
+                        "flag": p.get("status_flag", "")}
                        for p in t["roster"]],
             "needs": t["needs"],
             "contested": t["contested"],

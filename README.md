@@ -86,7 +86,18 @@ Liquipedia lags real roster moves, and you will often know first. Add a row to
 ```
 
 Leave `to` empty for a departure or retirement. To move someone between teams,
-set both `from` and `to`.
+set both `from` and `to`. Add `"confirmed": false` and the name renders amber
+everywhere, the same as a leak, so expected moves never masquerade as settled ones.
+
+To change someone's role without moving them (a starter shifting to fill, say),
+use `role_changes` instead:
+
+```json
+{"date":"2026-08-24","player":"Melio","team":"FlyQuest","role":"Flex","confirmed":false}
+```
+
+A `Flex` player takes a remaining starter slot but keeps their own label, so a
+roster of five in the 2-2-2 plus one fill still reads as six starters.
 
 ## Layout
 

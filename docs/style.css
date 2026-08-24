@@ -154,6 +154,7 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
 .grp[data-r="DPS"] .grp-h span{color:var(--duelist)}
 .grp[data-r="Tank"] .grp-h span{color:var(--vanguard)}
 .grp[data-r="Support"] .grp-h span{color:var(--strategist)}
+.grp[data-r="Flex"] .grp-h span{color:#9B7BD4}
 
 .row{display:flex;align-items:center;gap:.35rem;padding:.12rem 0}
 .row input{

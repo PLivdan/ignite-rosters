@@ -122,8 +122,25 @@ def main():
                 "name": who, "role": mv.get("role") or prev_role,
                 "status": mv.get("status") or "main", "origin": "override",
                 "since": mv["date"], "ref": mv.get("source", ""),
+                # an expected-but-unconfirmed move renders amber, like a leak
+                "status_flag": "" if mv.get("confirmed", True) else "leaked",
             }
             applied.append((mv["date"], who, f"joined {dst} (override)"))
+
+    # role changes: same team, different role (e.g. a starter moving to fill)
+    for rc in overrides.get("role_changes", []):
+        tgt = index.get(norm(canon(rc.get("team", ""))))
+        if not tgt or rc["player"] not in state[tgt]:
+            continue
+        rec = state[tgt][rc["player"]]
+        was = rec["role"]
+        rec["role"] = rc["role"]
+        rec["origin"] = "override"
+        rec["since"] = rc["date"]
+        rec["ref"] = rc.get("source", "")
+        if not rc.get("confirmed", True):
+            rec["status_flag"] = "leaked"
+        applied.append((rc["date"], rc["player"], f"{was} to {rc['role']} on {tgt} (override)"))
 
     # ---- overlay: reported-but-unconfirmed ----
     leak_rows = []
