@@ -24,10 +24,17 @@ def resolve(rosters, leaks):
                 {"team": t["name"], "region": t["region"],
                  "role": p["role"], "status": p["status"]})
 
+    field = {norm(t["name"]) for t in rosters["teams"]}
     rows = []
     for post in leaks.get("posts", []):
         if post["kind"] != "roster":
-            rows.append({**post, "verdict": "—", "detail": "no roster claim"})
+            rows.append({**post, "verdict": "-", "detail": "no roster claim"})
+            continue
+        if norm(post.get("team", "")) not in field:
+            rows.append({**post, "verdict": "team not in field",
+                         "landed": 0, "claimed": len(post["players"]),
+                         "detail": f"{post['team']} is not in the Stage 2 field, "
+                                   f"so this leak no longer applies"})
             continue
         details, landed = [], 0
         for name in post["players"]:
@@ -51,7 +58,9 @@ def resolve(rosters, leaks):
 
 
 def main():
-    rosters = json.load(open(os.path.join(BUILD, "rosters.json")))
+    # current.json is the live field; rosters.json is the abandoned Stage 1 build
+    # and resolving against it reported players on teams no longer competing.
+    rosters = json.load(open(os.path.join(BUILD, "current.json")))
     rows = resolve(rosters, load())
     with open(os.path.join(BUILD, "leaks_resolved.json"), "w") as f:
         json.dump(rows, f, indent=2, ensure_ascii=False)
