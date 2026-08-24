@@ -79,6 +79,8 @@ function logChange(teamId, from, to) {
 }
 
 /* ---------- board ---------- */
+// Six boxes for the 2-2-2 spine: solid confirmed, hollow open, amber leaked.
+// Deliberately no rating letters here; ratings live in the roster panel.
 function pips(id) {
   return S.rosters[id].slots.map(s =>
     `<i class="pip ${!s.name ? "empty" : s.status === "leaked" ? "leak" : ""}"></i>`).join("");
@@ -114,7 +116,7 @@ function renderBoard() {
   const label = mode === "GLOBAL" ? "Global" : mode === "EU" ? "EMEA" : "Americas";
   document.getElementById("board").innerHTML = `
     <div class="board-head">
-      <h2>${label} power ranking</h2>
+      <h2>${label} ranking</h2>
       <div class="board-tools">
         ${mode === "GLOBAL" ? `<button class="tool sm" id="seed">Seed from EU + NA</button>` : ""}
         <button class="tool sm" id="sortrated">Order by player rating</button>
@@ -138,10 +140,12 @@ function rowHtml(teamId, kind, i, s) {
   const cls = s.status === "leaked" ? "leak" : open ? "empty" : "";
   const label = open ? "open" : s.status;
   const rk = s.rank || "";
+  const picker = RANKS.map(r =>
+    `<button class="rk${r === rk ? " on" : ""}" data-t="${r}" data-team="${teamId}"
+             data-kind="${kind}" data-i="${i}" ${open ? "disabled" : ""}
+             title="Rate ${r}${r === rk ? " (click again to clear)" : ""}">${r}</button>`).join("");
   return `<div class="row ${cls}">
-    <button class="rank${rk ? "" : " unrated"}" data-t="${rk}" data-team="${teamId}"
-            data-kind="${kind}" data-i="${i}" ${open ? "disabled" : ""}
-            title="Rate this player. Click to cycle S to F, again to clear.">${rk || "–"}</button>
+    <div class="rate" role="group" aria-label="Player rating">${picker}</div>
     <input value="${esc(s.name)}" placeholder="open slot"
            data-team="${teamId}" data-kind="${kind}" data-i="${i}" spellcheck="false">
     <button class="chip" data-s="${label}" data-team="${teamId}"
@@ -310,10 +314,10 @@ document.addEventListener("keydown", e => {
 });
 
 document.addEventListener("click", e => {
-  const rk = e.target.closest(".rank");
+  const rk = e.target.closest(".rk");
   if (rk && !rk.disabled) {
     const rec = bucket(rk.dataset.team, rk.dataset.kind)[+rk.dataset.i];
-    if (rec) { rec.rank = nextRank(rec.rank); render(); }
+    if (rec) { rec.rank = rec.rank === rk.dataset.t ? null : rk.dataset.t; render(); }
     return;
   }
   const c = e.target.closest(".chip");
@@ -411,6 +415,55 @@ on("reset", "click", () => {
   b.dataset.armed = "1"; b.textContent = "Sure?";
   setTimeout(() => { delete b.dataset.armed; b.textContent = "Reset"; }, 3000);
 });
+
+/* ---------- panel width: collapse and drag-resize ---------- */
+const PANEL_KEY = "ignite-s2-panel";
+// First run scales the panel to the monitor rather than pinning a laptop width.
+const panelDefault = () =>
+  ({ w: Math.round(Math.min(620, Math.max(360, window.innerWidth * 0.26))), hidden: false });
+const readPanel = () => {
+  try { return JSON.parse(localStorage.getItem(PANEL_KEY)) || panelDefault(); }
+  catch (e) { return panelDefault(); }
+};
+function applyPanel() {
+  const st = readPanel();
+  document.body.classList.toggle("panel-hidden", !!st.hidden);
+  document.documentElement.style.setProperty("--panelw", st.hidden ? "0px" : st.w + "px");
+  const b = document.getElementById("togglepanel");
+  if (b) b.textContent = st.hidden ? "Show roster" : "Hide roster";
+  return st;
+}
+function setPanel(patch) {
+  const st = { ...readPanel(), ...patch };
+  localStorage.setItem(PANEL_KEY, JSON.stringify(st));
+  applyPanel();
+}
+on("togglepanel", "click", () => setPanel({ hidden: !readPanel().hidden }));
+(() => {
+  const grip = document.getElementById("resizer");
+  if (!grip) return;
+  let dragging = false;
+  const move = e => {
+    if (!dragging) return;
+    // clamp so the panel can never be dragged off-screen or swallow the board
+    const w = Math.max(300, Math.min(window.innerWidth - 420, window.innerWidth - e.clientX));
+    document.documentElement.style.setProperty("--panelw", w + "px");
+  };
+  grip.addEventListener("pointerdown", e => {
+    dragging = true; grip.setPointerCapture(e.pointerId);
+    document.body.classList.add("resizing");
+  });
+  grip.addEventListener("pointermove", move);
+  grip.addEventListener("pointerup", e => {
+    dragging = false; grip.releasePointerCapture(e.pointerId);
+    document.body.classList.remove("resizing");
+    const w = parseInt(getComputedStyle(document.documentElement)
+      .getPropertyValue("--panelw"), 10) || panelDefault().w;
+    setPanel({ w, hidden: false });
+  });
+  grip.addEventListener("dblclick", () => setPanel({ ...panelDefault(), hidden: false }));
+})();
+applyPanel();
 
 fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   DATA = d; S = load() || freshState(); render();

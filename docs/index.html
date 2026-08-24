@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ignite 2026 Stage 2 — Power Ranking</title>
 <meta name="description" content="Drag-to-rank tier list for Marvel Rivals Ignite 2026 Stage 2, with live-editable rosters.">
-<link rel="stylesheet" href="style.css?v=f521083278">
+<link rel="stylesheet" href="style.css?v=b7c03f96ff">
 </head>
 <body>
 <div class="app">
@@ -18,6 +18,7 @@
       <button data-m="GLOBAL" aria-pressed="true">Global</button>
     </div>
     <div class="spacer" style="flex:1"></div>
+    <button class="tool" id="togglepanel">Hide roster</button>
     <button class="tool" id="export">Export</button>
     <button class="tool" id="import">Import</button>
     <button class="tool" id="reset">Reset</button>
@@ -26,6 +27,7 @@
 
   <div class="main">
     <div class="board" id="board"></div>
+    <div class="resizer" id="resizer" title="Drag to resize. Double-click to reset."></div>
     <aside class="side">
       <div id="panel" class="hint">
         <p><b>Drag a team</b> from the pool into the list to place it. Drag rows to
@@ -36,7 +38,10 @@
         <p><b>Click a team</b> to open its roster here, then click any name to change
            it. Rate players S to F and each team shows the placement its roster
            implies.</p>
-        <p>The six dots are the roster: solid confirmed, hollow open, amber leaked.</p>
+        <p>The six dots on each team are its starters: solid confirmed, hollow an
+           open slot, amber a leak.</p>
+        <p><b>Hide roster</b> gives the ranking the full width, or drag the divider
+           to size the panel however you like.</p>
       </div>
       <div class="log">
         <h3>Roster changes this session</h3>
@@ -48,6 +53,6 @@
     </aside>
   </div>
 </div>
-<script src="app.js?v=7ec4ac0a4f"></script>
+<script src="app.js?v=41d7529182"></script>
 </body>
 </html>
