@@ -34,11 +34,12 @@
       "date": "2026-08-24",
       "player": "Meliø",
       "team": "FlyQuest",
-      "role": "Flex",
+      "role": "DPS",
+      "status": "sub",
       "confirmed": false,
       "source": "Clock (VOLT)",
-      "note": "Moves to fill to make room for Reedis. Expected, not confirmed."
+      "note": "Benched when Reedis joins. Expected, not confirmed. Support slot stays open."
     }
   ],
-  "role_changes_note": "Change someone's role without moving teams. Applied after moves."
+  "role_changes_note": "Change a player's role and/or status without moving teams. Applied after moves."
 }

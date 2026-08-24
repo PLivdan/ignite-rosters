@@ -127,20 +127,24 @@ def main():
             }
             applied.append((mv["date"], who, f"joined {dst} (override)"))
 
-    # role changes: same team, different role (e.g. a starter moving to fill)
+    # same team, different role and/or status (a starter moving to the bench)
     for rc in overrides.get("role_changes", []):
         tgt = index.get(norm(canon(rc.get("team", ""))))
         if not tgt or rc["player"] not in state[tgt]:
             continue
         rec = state[tgt][rc["player"]]
-        was = rec["role"]
-        rec["role"] = rc["role"]
+        was = f"{rec['status']} {rec['role']}"
+        if rc.get("role"):
+            rec["role"] = rc["role"]
+        if rc.get("status"):
+            rec["status"] = rc["status"]
         rec["origin"] = "override"
         rec["since"] = rc["date"]
         rec["ref"] = rc.get("source", "")
         if not rc.get("confirmed", True):
             rec["status_flag"] = "leaked"
-        applied.append((rc["date"], rc["player"], f"{was} to {rc['role']} on {tgt} (override)"))
+        applied.append((rc["date"], rc["player"],
+                        f"{was} to {rec['status']} {rec['role']} on {tgt} (override)"))
 
     # ---- overlay: reported-but-unconfirmed ----
     leak_rows = []
