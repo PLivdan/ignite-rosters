@@ -44,13 +44,14 @@ header{
 .brand{font-family:"Oswald";font-weight:700;font-size:1.2rem;letter-spacing:.08em;
        text-transform:uppercase;white-space:nowrap}
 .brand span{color:var(--ink3);font-weight:400}
-.seg{display:flex;border:1px solid var(--line2);border-radius:999px;overflow:hidden}
+.seg{display:flex;border:1px solid var(--line2);border-radius:999px;
+     overflow:hidden;flex:none}
 .seg button{padding:.35rem 1rem;font-weight:600;font-size:.82rem;letter-spacing:.06em;
             text-transform:uppercase;color:var(--ink3);white-space:nowrap}
 .seg button[aria-pressed="true"]{background:var(--ink);color:#0E1116}
 .tool{padding:.4rem .85rem;border:1px solid var(--line2);border-radius:.45rem;
       font-weight:600;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;
-      color:var(--ink2);white-space:nowrap}
+      color:var(--ink2);white-space:nowrap;flex:none}
 .tool:hover{border-color:var(--ink3);color:var(--ink)}
 .tool.sm{padding:.28rem .65rem;font-size:.72rem;letter-spacing:.06em}
 
@@ -76,6 +77,9 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
   margin-bottom:.25rem;cursor:grab;position:relative;
 }
 .rank-row:hover{border-color:var(--line2)}
+.rank-row:focus-visible,.team:focus-visible,.tool:focus-visible,
+.seg button:focus-visible,.rk:focus-visible,.chip:focus-visible{
+  outline:2px solid var(--ink);outline-offset:2px}
 .rank-row.sel{border-color:var(--ink);background:#222A34}
 .rank-row.drag{opacity:.35}
 .rank-row.ins-before{box-shadow:0 -3px 0 -1px var(--leak)}
@@ -88,7 +92,6 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
        overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .reg{font-size:.66rem;font-weight:700;letter-spacing:.12em;color:var(--ink3);
      border:1px solid var(--line);border-radius:.3rem;padding:.1rem .45rem;flex:none}
-.grip{color:var(--ink3);font-size:.9rem;flex:none;letter-spacing:-2px;pointer-events:none}
 .drop-hint{padding:1.4rem;text-align:center;color:var(--ink3);font-style:italic;
            border:1px dashed var(--line);border-radius:var(--r)}
 
@@ -238,8 +241,6 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
 .avg[data-t="B"]{background:var(--b)} .avg[data-t="C"]{background:var(--c)}
 .avg[data-t="D"]{background:var(--d)}
 .avg[data-t="F"]{background:var(--f);color:#C9CFD8}
-.avg.none{background:none;color:var(--ink3);font-family:"Oswald";font-weight:700;
-          font-size:.8rem;display:flex;align-items:center;justify-content:center}
 
 ::-webkit-scrollbar{width:.55rem;height:.55rem}
 ::-webkit-scrollbar-thumb{background:#2A323D;border-radius:.4rem}

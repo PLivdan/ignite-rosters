@@ -99,15 +99,14 @@ function pips(id) {
 
 function rowCard(id, place) {
   const t = team(id), a = teamAvg(id);
-  return `<li class="rank-row${sel === id ? " sel" : ""}" draggable="true" data-id="${id}">
+  return `<li class="rank-row${sel === id ? " sel" : ""}" draggable="true" data-id="${id}"
+              tabindex="0" aria-label="${esc(t.name)}, rank ${place}">
     <span class="place">${place}</span>
     <img src="${t.logo}" alt="">
     <span class="rname">${esc(t.name)}</span>
     ${mode === "GLOBAL" ? `<span class="reg">${t.region === "EU" ? "EMEA" : "AM"}</span>` : ""}
     <span class="pips">${pips(id)}</span>
-    ${a ? `<span class="avg" data-t="${a.letter}" title="Players average ${a.mean.toFixed(1)}">${a.letter}</span>`
-        : `<span class="avg none">–</span>`}
-    <span class="grip" title="Drag to reorder">⠿</span>
+    ${a ? `<span class="avg" data-t="${a.letter}" title="Players average ${a.mean.toFixed(1)}">${a.letter}</span>` : ""}
   </li>`;
 }
 
