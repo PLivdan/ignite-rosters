@@ -21,6 +21,17 @@
       "confirmed": false,
       "source": "Clock (VOLT)",
       "note": "Free agent since leaving Stickdrift 2026-08-17. Not on Liquipedia yet."
+    },
+    {
+      "date": "2026-08-24",
+      "player": "Meliø",
+      "from": "FlyQuest",
+      "to": "RAD Esports",
+      "role": "DPS",
+      "status": "sub",
+      "confirmed": true,
+      "source": "Clock (VOLT)",
+      "note": "Stated as done. Not on Liquipedia yet."
     }
   ],
   "exclude_teams": [
@@ -29,17 +40,6 @@
     "StickDrift"
   ],
   "exclude_note": "Teams dropped from the field. Remove a name here to bring it back.",
-  "role_changes": [
-    {
-      "date": "2026-08-24",
-      "player": "Meliø",
-      "team": "FlyQuest",
-      "role": "DPS",
-      "status": "sub",
-      "confirmed": false,
-      "source": "Clock (VOLT)",
-      "note": "Benched when Reedis joins. Expected, not confirmed. Support slot stays open."
-    }
-  ],
+  "role_changes": [],
   "role_changes_note": "Change a player's role and/or status without moving teams. Applied after moves."
 }
