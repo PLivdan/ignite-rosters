@@ -72,7 +72,8 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
 
 .ranking{list-style:none;margin:0 0 .25rem;padding:0}
 .rank-row{
-  display:flex;align-items:center;gap:.7rem;padding:.35rem .75rem .35rem .25rem;
+  display:flex;align-items:center;gap:.8rem;max-width:46rem;
+  padding:.35rem .9rem .35rem .25rem;
   background:var(--panel);border:1px solid transparent;border-radius:var(--r);
   margin-bottom:.25rem;cursor:grab;position:relative;
 }
@@ -90,16 +91,17 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
 .rname{font-family:"Oswald";font-weight:600;font-size:1.05rem;letter-spacing:.03em;
        text-transform:uppercase;flex:1;min-width:0;pointer-events:none;
        overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-row .reg{margin-left:auto}
 .reg{font-size:.66rem;font-weight:700;letter-spacing:.12em;color:var(--ink3);
      border:1px solid var(--line);border-radius:.3rem;padding:.1rem .45rem;flex:none}
 .drop-hint{padding:1.4rem;text-align:center;color:var(--ink3);font-style:italic;
-           border:1px dashed var(--line);border-radius:var(--r)}
+           border:1px dashed var(--line);border-radius:var(--r);max-width:46rem}
 
 /* ---------- pool ---------- */
-.pool-wrap{margin-top:.8rem;border-top:1px solid var(--line);padding-top:.65rem}
+.pool-wrap{margin-top:.8rem;border-top:1px solid var(--line);padding-top:.65rem;max-width:46rem}
 .pool-title{font-family:"Oswald";font-weight:600;font-size:.78rem;letter-spacing:.16em;
             text-transform:uppercase;color:var(--ink3);margin:0 0 .55rem}
-.pool{min-height:4.5rem;border:1px dashed var(--line);border-radius:var(--r);
+.pool{min-height:4.5rem;max-width:46rem;border:1px dashed var(--line);border-radius:var(--r);
       background:var(--panel);padding:.5rem;display:grid;
       grid-template-columns:repeat(auto-fill,minmax(5.8rem,1fr));gap:.5rem;
       align-content:flex-start}
@@ -220,7 +222,8 @@ body.panel-hidden .side,body.panel-hidden .resizer{display:none}
                text-transform:uppercase;font-weight:700}
 .empty-note{color:var(--ink3);font-size:.88rem;font-style:italic}
 
-.hint{padding:1.2rem;color:var(--ink3);font-size:.95rem;line-height:1.55}
+.hint{padding:1.1rem;color:var(--ink3);font-size:.92rem;line-height:1.5}
+.hint p{margin:0 0 .7rem}
 .hint b{color:var(--ink2);font-weight:600}
 .credit{margin:.6rem 0 0;font-size:.72rem;line-height:1.5;color:var(--ink3)}
 .credit a{color:var(--ink2)}
