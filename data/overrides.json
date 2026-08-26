@@ -35,11 +35,19 @@
     }
   ],
   "exclude_teams": [
-    "Disband",
     "SON MIJO IBN",
     "StickDrift"
   ],
   "exclude_note": "Teams dropped from the field. Remove a name here to bring it back.",
   "role_changes": [],
-  "role_changes_note": "Change a player's role and/or status without moving teams. Applied after moves."
+  "role_changes_note": "Change a player's role and/or status without moving teams. Applied after moves.",
+  "add_teams": [
+    {
+      "name": "Team Necros",
+      "short": "NEC",
+      "region": "NA",
+      "note": "Not in Liquipedia's Ignite field. Roster typed in by hand."
+    }
+  ],
+  "add_teams_note": "Teams that are not on Liquipedia's Ignite page. They start with no roster and a lettered monogram; type the players into the board or the Rosters sheet."
 }

@@ -99,6 +99,16 @@ use `role_changes` instead:
 A `Flex` player takes a remaining starter slot but keeps their own label, so a
 roster of five in the 2-2-2 plus one fill still reads as six starters.
 
+To add a team Liquipedia's Ignite page does not list at all, use `add_teams`.
+It starts with no roster and a lettered monogram, ready for names to be typed in:
+
+```json
+{"name":"Team Necros","short":"NEC","region":"NA"}
+```
+
+`exclude_teams` removes a team from the field; deleting its name there brings
+it back.
+
 ## Layout
 
 ```

@@ -22,7 +22,8 @@ STAGE2 = {"EU": "raw/stage2_EU.wiki", "NA": "raw/stage2_NA.wiki"}
 
 # Short tags for orgs Weverboard does not track (new to Stage 2).
 EXTRA_SHORT = {"Vengeful": "VNG", "Disband": "DSB", "SON MIJO IBN": "SMI",
-               "Dreamland": "DL", "JollyJesters": "JJ", "The Chosen Ones": "TCO"}
+               "Dreamland": "DL", "JollyJesters": "JJ", "The Chosen Ones": "TCO",
+               "Team Necros": "NEC"}
 
 # Canonical display names for orgs that appear under several spellings.
 CANON = {
@@ -57,6 +58,15 @@ def main():
     dropped = {norm(canon(x)) for x in overrides.get("exclude_teams", [])}
 
     teams = [t for t in stage2_teams() if norm(canon(t["name"])) not in dropped]
+    # Teams that exist in the scene but not on Liquipedia's Ignite page. They
+    # carry no roster, so every slot shows as open for someone to type into.
+    for extra in overrides.get("add_teams", []):
+        if norm(canon(extra["name"])) in dropped:
+            continue
+        if any(norm(canon(t["name"])) == norm(canon(extra["name"])) for t in teams):
+            continue
+        teams.append({"region": extra.get("region", "NA"), "name": extra["name"],
+                      "lp_name": extra["name"], "added": True})
     index = {norm(t["name"]): t["name"] for t in teams}
     for t in teams:
         index.setdefault(norm(t["lp_name"]), t["name"])
